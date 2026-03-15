@@ -22,5 +22,9 @@ public class JugadorServicio {
         return jugadorRepositorio.guardarJugador(jugador);
     }
 
+    public Jugador getJugador(long id){
+        return jugadorRepositorio.getJugador(id);
+    }
+
 
 }

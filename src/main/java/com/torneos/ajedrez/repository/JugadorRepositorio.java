@@ -22,4 +22,13 @@ public class JugadorRepositorio {
         jugadores.add(jugador);
         return jugador;
     }
+
+    public Jugador getJugador(long id) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.getJugadorId() == id) {
+                return jugador;
+            }
+        }
+        return null;
+    }
 }
