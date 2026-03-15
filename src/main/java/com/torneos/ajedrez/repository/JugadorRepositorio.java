@@ -31,4 +31,18 @@ public class JugadorRepositorio {
         }
         return null;
     }
+
+    public Jugador putJugador(long id, Jugador jugadorActualizado) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.getJugadorId() == id) {
+                jugador.setNombreCompleto(jugadorActualizado.getNombreCompleto());
+                jugador.setGenero(jugadorActualizado.getGenero());
+                jugador.setElo(jugadorActualizado.getElo());
+                jugador.setEdad(jugadorActualizado.getEdad());
+                jugador.setNacionalidad(jugadorActualizado.getNacionalidad());
+                return jugador;
+            }
+        }
+        return null;
+    }
 }

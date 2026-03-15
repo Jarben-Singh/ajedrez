@@ -36,5 +36,13 @@ public class JugadorControlador {
         return new ResponseEntity<>(jugadorServicio.guardarJugador(jugador), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity actualizarJugador(
+            @PathVariable long id,
+            @RequestBody Jugador jugador){
+        log.info("Actualizando Jugador: ", jugador);
+        return new ResponseEntity<>(jugadorServicio.putJugador(jugador, id), HttpStatus.OK);
+    }
+
 
 }

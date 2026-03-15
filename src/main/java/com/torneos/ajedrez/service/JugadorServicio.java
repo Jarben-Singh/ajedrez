@@ -26,5 +26,9 @@ public class JugadorServicio {
         return jugadorRepositorio.getJugador(id);
     }
 
+    public Jugador putJugador(Jugador jugador, long id){
+        return jugadorRepositorio.putJugador(id, jugador);
+    }
+
 
 }
