@@ -45,4 +45,13 @@ public class JugadorRepositorio {
         }
         return null;
     }
+
+    public void eliminarJugador(long id) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.getJugadorId() == id) {
+                jugadores.remove(jugador);
+            }
+        }
+    }
+
 }

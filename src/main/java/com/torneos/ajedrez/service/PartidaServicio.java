@@ -1,6 +1,8 @@
 package com.torneos.ajedrez.service;
 import com.torneos.ajedrez.exception.DatoIncorrecto;
+import com.torneos.ajedrez.exception.DueloInvalido;
 import com.torneos.ajedrez.exception.JugadorInexistente;
+import com.torneos.ajedrez.exception.PartidaInexistente;
 import com.torneos.ajedrez.model.Partida;
 import com.torneos.ajedrez.repository.PartidaRepositorio;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,10 @@ public class PartidaServicio {
     }
 
     public Partida buscarPartida(long idPartida) {
+        if (validarExistenciaPartida(idPartida)) {
+            log.warn("No se ha encontrado la partida");
+            throw new PartidaInexistente("No se ha encontrado la partida con el id: {}" + idPartida);
+        }
         return partidaRepositorio.buscarPartida(idPartida);
     }
 
@@ -41,6 +47,11 @@ public class PartidaServicio {
         if (validarJugadoresPartida(partida)) {
             log.warn("Jugador no valido");
             throw new JugadorInexistente("Jugador no encontrado");
+        }
+
+        if (validarDuelo(partida)) {
+            log.warn("Error: El mismo jugador está asignado contra sí mismo");
+            throw new DueloInvalido("Un jugador no puede enfrentarse a sí mismo");
         }
 
         log.info("Creando partida {}", partida);
@@ -58,6 +69,11 @@ public class PartidaServicio {
             throw new JugadorInexistente("Jugador no encontrado");
         }
 
+        if (validarDuelo(partida)) {
+            log.warn("Error: El mismo jugador está asignado contra sí mismo");
+            throw new DueloInvalido("Un jugador no puede enfrentarse a sí mismo");
+        }
+
         log.info("Actualizando partida {}", partida);
         return partidaRepositorio.actualizarPartida(partida, id);
     }
@@ -67,16 +83,19 @@ public class PartidaServicio {
 
     private boolean validarJugadoresPartida(Partida partida) {
 
-        if (partida.getJugadorBlancasId() == partida.getJugadorNegrasId()) {
-            return true;
-        }
-
         if (jugadorServicio.validarExistenciaJugador(partida.getJugadorBlancasId())
                 || jugadorServicio.validarExistenciaJugador(partida.getJugadorNegrasId())) {
             log.warn("No se encontró el jugador");
             return true;
         }
 
+        return false;
+    }
+
+    private boolean validarDuelo(Partida partida) {
+        if (partida.getJugadorNegrasId() == partida.getJugadorBlancasId()) {
+            return true;
+        }
         return false;
     }
 
@@ -94,5 +113,9 @@ public class PartidaServicio {
         }
 
         return false;
+    }
+
+    private boolean validarExistenciaPartida (Long id) {
+        return partidaRepositorio.buscarPartida(id) == null;
     }
 }

@@ -27,4 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handlePartidaInexistente(PartidaInexistente partidaInexistente){
         return new ResponseEntity<>(partidaInexistente.toString(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DueloInvalido.class)
+    public ResponseEntity<String> handleDueloInvalido(DueloInvalido dueloInvalido) {
+        return new ResponseEntity<>(dueloInvalido.toString(), HttpStatus.BAD_REQUEST);
+    }
 }

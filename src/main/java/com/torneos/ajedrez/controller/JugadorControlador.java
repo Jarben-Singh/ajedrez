@@ -44,5 +44,12 @@ public class JugadorControlador {
         return new ResponseEntity<>(jugadorServicio.actualizarJugador(jugador, id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminarJugador(@PathVariable long id){
+        log.info("Iniciando la eliminacion de jugador {}", id);
+        jugadorServicio.eliminarJugador(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

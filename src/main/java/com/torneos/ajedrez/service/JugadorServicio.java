@@ -73,6 +73,15 @@ public class JugadorServicio {
         return jugadorRepositorio.actualizarJugador(id, jugador);
     }
 
+    public void eliminarJugador(long id){
+        if (validarExistenciaJugador(id)) {
+            log.warn("No se encontro el jugador");
+            throw new JugadorInexistente("El jugador no existe");
+        }
+
+        jugadorRepositorio.eliminarJugador(id);
+    }
+
 
     // ---------------------------------------------------------------------------------- //
                                        // VALIDACIONES //
@@ -92,6 +101,4 @@ public class JugadorServicio {
     public boolean validarExistenciaJugador(Long jugadorId){
         return jugadorRepositorio.buscarJugador(jugadorId) == null;
     }
-
-
 }

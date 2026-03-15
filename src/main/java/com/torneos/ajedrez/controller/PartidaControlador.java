@@ -1,6 +1,5 @@
 package com.torneos.ajedrez.controller;
 
-import com.torneos.ajedrez.model.Jugador;
 import com.torneos.ajedrez.model.Partida;
 import com.torneos.ajedrez.service.PartidaServicio;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,8 @@ public class PartidaControlador {
     @GetMapping
     public ResponseEntity obtenerPartidas() {
         log.info("Obteniendo todas los partidas");
-        ArrayList<Partida> partidas = new ArrayList<>();
+        ArrayList<Partida> partidas;
+        partidas = partidaServicio.obtenerListaPartidas();
         return ResponseEntity.ok(partidas);
     }
 
