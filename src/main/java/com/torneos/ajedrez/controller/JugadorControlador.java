@@ -14,25 +14,25 @@ import java.util.ArrayList;
 @RequestMapping("/jugadores")
 public class JugadorControlador {
 
-    private JugadorServicio jugadorServicio;
+    private final JugadorServicio jugadorServicio;
     public JugadorControlador(JugadorServicio jugadorServicio) {this.jugadorServicio = jugadorServicio;}
 
     @GetMapping
     public ResponseEntity getJugadores() {
         log.info("Recuperando todos los jugadores");
-        ArrayList<Jugador> jugadores = jugadorServicio.getJugadores();
+        ArrayList<Jugador> jugadores = jugadorServicio.obtenerListaJugadores();
         return ResponseEntity.ok(jugadores);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getJugador(@PathVariable long id) {
-        log.info("Buscando jugador por id", id);
-        return new ResponseEntity<>(jugadorServicio.getJugador(id), HttpStatus.OK);
+        log.info("Iniciando busqueda por id {}", id);
+        return new ResponseEntity<>(jugadorServicio.buscarJugador(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity guardarJugador(@RequestBody Jugador jugador){
-        log.info("Guardando Jugador: ", jugador);
+        log.info("Iniciando guardado de jugador {}", jugador);
         return new ResponseEntity<>(jugadorServicio.guardarJugador(jugador), HttpStatus.CREATED);
     }
 
@@ -40,8 +40,8 @@ public class JugadorControlador {
     public ResponseEntity actualizarJugador(
             @PathVariable long id,
             @RequestBody Jugador jugador){
-        log.info("Actualizando Jugador: ", jugador);
-        return new ResponseEntity<>(jugadorServicio.putJugador(jugador, id), HttpStatus.OK);
+        log.info("Iniciando actualización de jugador: {}", jugador);
+        return new ResponseEntity<>(jugadorServicio.actualizarJugador(jugador, id), HttpStatus.OK);
     }
 
 

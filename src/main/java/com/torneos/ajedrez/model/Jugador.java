@@ -11,8 +11,8 @@ public class Jugador {
     private long jugadorId;
     private String nombreCompleto;
     private String genero;
-    private double elo;
-    private int edad;
+    private Double elo;
+    private Integer edad;
     private String nacionalidad;
 
     public void setId(long id) {

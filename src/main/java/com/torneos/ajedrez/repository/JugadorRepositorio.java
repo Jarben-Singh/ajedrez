@@ -8,9 +8,9 @@ import java.util.ArrayList;
 @Service
 public class JugadorRepositorio {
 
-    private final ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+    private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 
-    public ArrayList<Jugador> getJugadores() {
+    public ArrayList<Jugador> ObtenerListaJugadores() {
         return jugadores;
     }
 
@@ -23,7 +23,7 @@ public class JugadorRepositorio {
         return jugador;
     }
 
-    public Jugador getJugador(long id) {
+    public Jugador buscarJugador(long id) {
         for (Jugador jugador : jugadores) {
             if (jugador.getJugadorId() == id) {
                 return jugador;
@@ -32,7 +32,7 @@ public class JugadorRepositorio {
         return null;
     }
 
-    public Jugador putJugador(long id, Jugador jugadorActualizado) {
+    public Jugador actualizarJugador(long id, Jugador jugadorActualizado) {
         for (Jugador jugador : jugadores) {
             if (jugador.getJugadorId() == id) {
                 jugador.setNombreCompleto(jugadorActualizado.getNombreCompleto());
