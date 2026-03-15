@@ -1,4 +1,4 @@
-
+package com.torneos.ajedrez.controller;
 
 import com.torneos.ajedrez.model.Jugador;
 import com.torneos.ajedrez.service.JugadorServicio;
