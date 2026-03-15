@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDueloInvalido(DueloInvalido dueloInvalido) {
         return new ResponseEntity<>(dueloInvalido.toString(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PartidaActiva.class)
+    public ResponseEntity<String> handleDueloInvalido(PartidaActiva partidaActiva) {
+        return new ResponseEntity<>(partidaActiva.toString(), HttpStatus.BAD_REQUEST);
+    }
 }

@@ -24,7 +24,7 @@ public class PartidaServicio {
     }
 
     // ---------------------------------------------------------------------------------- //
-                                        // SERVICIO //
+                                        // SERVICIO CRUD //
 
     public ArrayList<Partida> obtenerListaPartidas() {
         return partidaRepositorio.ObtenerListaPartidas();
@@ -35,6 +35,7 @@ public class PartidaServicio {
             log.warn("No se ha encontrado la partida");
             throw new PartidaInexistente("No se ha encontrado la partida con el id: {}" + idPartida);
         }
+
         return partidaRepositorio.buscarPartida(idPartida);
     }
 

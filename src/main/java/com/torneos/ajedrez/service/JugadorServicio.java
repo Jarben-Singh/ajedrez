@@ -3,8 +3,11 @@ package com.torneos.ajedrez.service;
 import com.torneos.ajedrez.exception.DatoFaltante;
 import com.torneos.ajedrez.exception.DatoIncorrecto;
 import com.torneos.ajedrez.exception.JugadorInexistente;
+import com.torneos.ajedrez.exception.PartidaActiva;
 import com.torneos.ajedrez.model.Jugador;
+import com.torneos.ajedrez.model.Partida;
 import com.torneos.ajedrez.repository.JugadorRepositorio;
+import com.torneos.ajedrez.repository.PartidaRepositorio;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,15 @@ public class JugadorServicio {
     // ---------------------------------------------------------------------------------- //
                                 // Inyección de dependencias //
     private final JugadorRepositorio jugadorRepositorio;
-    public JugadorServicio(JugadorRepositorio jugadorRepositorio) {this.jugadorRepositorio = jugadorRepositorio;}
+    private final PartidaRepositorio partidaRepositorio;
+    public JugadorServicio(JugadorRepositorio jugadorRepositorio, PartidaRepositorio partidaRepositorio) {
+        this.jugadorRepositorio = jugadorRepositorio;
+        this.partidaRepositorio = partidaRepositorio;
+    }
 
 
     // ---------------------------------------------------------------------------------- //
-                                        // SERVICIO //
+                                        // SERVICIO CRUD //
 
     public ArrayList<Jugador> obtenerListaJugadores() {
         log.info("Buscando jugadores");
@@ -79,8 +86,13 @@ public class JugadorServicio {
             throw new JugadorInexistente("El jugador no existe");
         }
 
+        if (validarPartidaActiva(id)) {
+        log.warn("El jugador esta en una partida activa");
+        throw new PartidaActiva("No se puede eliminar a un jugador que esté en una partida activa");
+        }
         jugadorRepositorio.eliminarJugador(id);
     }
+
 
 
     // ---------------------------------------------------------------------------------- //
@@ -100,5 +112,18 @@ public class JugadorServicio {
 
     public boolean validarExistenciaJugador(Long jugadorId){
         return jugadorRepositorio.buscarJugador(jugadorId) == null;
+    }
+
+    public boolean validarPartidaActiva (Long id) {
+        ArrayList<Partida> partidas = partidaRepositorio.ObtenerListaPartidas();
+        for (Partida p : partidas) {
+            if (p.getEstado().equals("EN CURSO")) {
+                if (p.getJugadorNegrasId() == id
+                        || p.getJugadorBlancasId() == id) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
