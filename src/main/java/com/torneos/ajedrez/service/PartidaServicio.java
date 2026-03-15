@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class PartidaServicio {
     public Partida crearPartida(Partida partida) {
         if (validarRitmoPartida(partida)) {
             log.warn("Ritmo no valido");
-            throw new DatoIncorrecto("Ritmo partida incorrecto");
+            throw new DatoIncorrecto("Ritmo de partida incorrecto");
         }
 
         if (validarJugadoresPartida(partida)) {
@@ -79,6 +80,21 @@ public class PartidaServicio {
         return partidaRepositorio.actualizarPartida(partida, id);
     }
 
+    public Partida finalizarPartida(long id, long resultado) {
+        if (validarExistenciaPartida(id)) {
+            log.warn("No se ha encontrado la partida");
+            throw new PartidaInexistente("No se ha encontrado la partida con el id: {}" + id);
+        }
+
+        if (validarEstadoPartida(id)) {
+            log.warn("ERROR: La partida no estaba en curso");
+            throw new DatoIncorrecto("No se puede finalizar una partida que no está en curso");
+        }
+
+        return partidaRepositorio.finalizarPartida(id, resultado);
+
+    }
+
     // ---------------------------------------------------------------------------------- //
                                         // VALIDACIONES //
 
@@ -94,14 +110,17 @@ public class PartidaServicio {
     }
 
     private boolean validarDuelo(Partida partida) {
-        if (partida.getJugadorNegrasId() == partida.getJugadorBlancasId()) {
-            return true;
-        }
-        return false;
+        return partida.getJugadorNegrasId() == partida.getJugadorBlancasId();
+    }
+
+    private boolean validarEstadoPartida(long id) {
+        return !Objects.equals(partidaRepositorio.buscarPartida(id).getEstado(), "EN CURSO");
     }
 
     private boolean validarRitmoPartida(Partida partida) {
 
+
+        // Validar el String
         if (partida.getRitmo() == null) {
             return true;
         }
@@ -113,7 +132,25 @@ public class PartidaServicio {
             return true;
         }
 
-        return false;
+        //Validar que el tiempo coincida con el tipo de juego
+
+        Integer duracion = partida.getTiempoTotal();
+        switch (ritmo) {
+            case "BALA":
+                return duracion >= 3;
+
+            case "BLITZ":
+                return duracion >= 10;
+
+            case "RAPID":
+                return duracion >= 60;
+
+            case "CLASSIC":
+                return duracion <= 60;
+
+            default:
+                return false;
+        }
     }
 
     private boolean validarExistenciaPartida (Long id) {

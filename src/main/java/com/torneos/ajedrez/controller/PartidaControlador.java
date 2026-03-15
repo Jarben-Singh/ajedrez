@@ -1,5 +1,6 @@
 package com.torneos.ajedrez.controller;
 
+import com.torneos.ajedrez.model.Jugador;
 import com.torneos.ajedrez.model.Partida;
 import com.torneos.ajedrez.service.PartidaServicio;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -31,13 +33,13 @@ public class PartidaControlador {
 
     @GetMapping("/{id}")
     public ResponseEntity getJugador(@PathVariable long id) {
-        log.info("Iniciando busqueda de partida por id {}", id);
+        log.info("Iniciando busqueda de partida por id ", id);
         return new ResponseEntity<>(partidaServicio.buscarPartida(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity guardarJugador(@RequestBody Partida partida){
-        log.info("Iniciando creacion de partida {}", partida);
+        log.info("Iniciando creacion de partida ", partida);
         return new ResponseEntity<>(partidaServicio.crearPartida(partida), HttpStatus.CREATED);
     }
 
@@ -45,7 +47,17 @@ public class PartidaControlador {
     public ResponseEntity actualizarPartida(
             @PathVariable long id,
             @RequestBody Partida partida){
-        log.info("Iniciando actualización de partida: {}", partida);
+        log.info("Iniciando actualización de partida: ", partida);
         return new ResponseEntity<>(partidaServicio.actualizarPartida(partida, id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/finalizar")
+    public ResponseEntity actualizarJugador(
+            @PathVariable long id,
+            @RequestBody HashMap<String, Long> body // ID del ganador
+            ){
+        long resultado = body.get("resultado");
+        log.info("Finalizando partida");
+        return new ResponseEntity<>(partidaServicio.finalizarPartida(id, resultado), HttpStatus.OK);
     }
 }

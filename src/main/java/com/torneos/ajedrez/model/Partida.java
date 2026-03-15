@@ -16,8 +16,8 @@ public class Partida {
     private String apertura;
     private int numeroJugadas;
     private String estado;
-    private long resultado; // Se colocará el ID del ganador, en caso de ser un empate el resultado será 0.5.
-    private String tiempoTotal;
+    private long resultado; // Se colocará el ID del ganador, en caso de ser un empate el resultado será 0.
+    private Integer tiempoTotal;
 
     public void setId(long id) {
         this.partidaId = id;

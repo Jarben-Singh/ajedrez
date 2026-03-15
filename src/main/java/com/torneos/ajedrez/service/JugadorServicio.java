@@ -115,15 +115,7 @@ public class JugadorServicio {
     }
 
     public boolean validarPartidaActiva (Long id) {
-        ArrayList<Partida> partidas = partidaRepositorio.ObtenerListaPartidas();
-        for (Partida p : partidas) {
-            if (p.getEstado().equals("EN CURSO")) {
-                if (p.getJugadorNegrasId() == id
-                        || p.getJugadorBlancasId() == id) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        Partida partida = partidaRepositorio.buscarPartida(id);
+        return !partida.getEstado().equals("EN CURSO");
     }
 }

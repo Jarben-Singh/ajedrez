@@ -49,4 +49,15 @@ public class PartidaRepositorio {
         }
         return null;
     }
+
+    public Partida finalizarPartida(long id, long resultado) {
+        for (Partida p : partidas) {
+            if (p.getPartidaId() == id) {
+                p.setEstado("FINALIZADA");
+                p.setResultado(resultado);
+                return p;
+            }
+        }
+        return null;
+    }
 }

@@ -26,13 +26,13 @@ public class JugadorControlador {
 
     @GetMapping("/{id}")
     public ResponseEntity getJugador(@PathVariable long id) {
-        log.info("Iniciando busqueda por id {}", id);
+        log.info("Iniciando busqueda por id ", id);
         return new ResponseEntity<>(jugadorServicio.buscarJugador(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity guardarJugador(@RequestBody Jugador jugador){
-        log.info("Iniciando guardado de jugador {}", jugador);
+        log.info("Iniciando guardado de jugador ", jugador);
         return new ResponseEntity<>(jugadorServicio.guardarJugador(jugador), HttpStatus.CREATED);
     }
 
@@ -40,13 +40,14 @@ public class JugadorControlador {
     public ResponseEntity actualizarJugador(
             @PathVariable long id,
             @RequestBody Jugador jugador){
-        log.info("Iniciando actualización de jugador: {}", jugador);
+        log.info("Iniciando actualización de jugador: ", jugador);
         return new ResponseEntity<>(jugadorServicio.actualizarJugador(jugador, id), HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity eliminarJugador(@PathVariable long id){
-        log.info("Iniciando la eliminacion de jugador {}", id);
+        log.info("Iniciando la eliminacion de jugador ", id);
         jugadorServicio.eliminarJugador(id);
         return ResponseEntity.noContent().build();
     }
